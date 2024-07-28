@@ -1,4 +1,4 @@
-This project uses the functional programming language Lean to formally prove the Hilbert Projection Theorem, and was created as part of the Formalising Mathematics course taught by Prof. Kevin Buzzard in 2022.
+This project uses the functional programming language Lean to formally prove the Hilbert Projection Theorem, and was created as part of the Formalising Mathematics course taught by Prof. Kevin Buzzard in 2022. There was no such proof available prior to this project.
 
 The Hilbert Projection Theorem is a famous result in analysis which says that for any vector $x$ in a Hilbert space and any nonempty closed convex subset $C$, there exists a unique vector $m \in C$ for which $\inf_{y \in C}\|y-x\|$ is achieved by $m$.
 
