@@ -15,7 +15,7 @@ variables {ι : Type}
 /-------------------------------------------------------------------------------------------------
 SECTION 1 : IN PREPARATION FOR THE HILBERT PROJECTION THEOREM              
 
-In this section we provide pre-requisite definitions and lemmas which we will need for our final boss:
+In this section we provide pre-requisite definitions which we will need for our final boss:
           *THE HILBERT PROJECTION THEOREM* 
 -------------------------------------------------------------------------------------------------/
 
@@ -49,8 +49,13 @@ def is_closedN_equiv (C : set E) : Prop :=
 def is_convex (C : set E) : Prop :=
 ∀ (x y : E), ∀ (t : ℝ), ((0 : ℝ) < t ∧ t < (1 : ℝ)) → ((1-t)•x + t•y) ∈ C
 
-/- Section 2 : Preliminary Lemmas   -/
+/-------------------------------------------------------------------------------------------------
+SECTION 2 : PRELIMINARY LEMMAS             
 
+In this section we provide the pre-requisite lemmas which we will need.
+-------------------------------------------------------------------------------------------------/
+
+-- A simple rule for inequalities which we will use later
 lemma le_trans_proj {a b c d e s : ℝ} (h1 : a ≤ b) (h2 : c ≤ d) (h3 : -s ≤ e) : 
                     2 * a + 2 * c - s ≤ 2 * b + 2 * d + e :=
 begin
@@ -59,6 +64,7 @@ begin
   exact add_le_add h1 h2,
 end
 
+-- Properties of cauchy sequences
 lemma cauchy_in_closed (L : set E) (h1 : is_closedN L) (h1a : is_closedN_equiv L) (y : ℕ → E) (h2 : is_cauchy y) (h3 : ∀ (n : ℕ), y n ∈ L) :
 ∃ (t ∈ L), tendstoN y t :=
 begin
@@ -72,6 +78,7 @@ begin
   exact h1a,
 end
 
+-- Algebra of limits: addition
 theorem tendsto_add' {a b : ℕ → ℝ} {t u : ℝ}
   (ha : tendsto a t) (hb : tendsto b u) :
   tendsto (λ n, a n + b n) (t + u) :=
@@ -79,6 +86,7 @@ begin
   sorry,
 end
 
+-- Lower bound property
 lemma LB_proj (a b : ℝ) : (∀ (ε > 0), a < b + ε) → a ≤ b :=
 begin
   by_contra,
@@ -95,6 +103,7 @@ begin
   linarith,
 end
 
+-- Algebra of inner products (i)
 lemma eq_one_proj (c : ℕ → E) (x : E) : 
 ∀ (n m : ℕ), ∥c n - c m∥^2 = ∥c n - x∥^2 + ∥c m - x∥^2 - 2 * (inner (c n - x) (c m - x) : ℝ) :=
 begin
@@ -108,6 +117,7 @@ begin
     simp at C1_1, exact C1_1,
 end
 
+-- Algebra of inner products (ii) 
 lemma eq_two_proj (c : ℕ → E) (x : E) : 
 ∀ (n m : ℕ), 4 * ∥ (1/2 : ℝ)•(c n + c m) - x ∥^ 2 = ∥c n - x∥^(2) + ∥c m - x∥^2 + 2 * (inner (c n - x) (c m - x) : ℝ) :=
 begin
@@ -150,6 +160,7 @@ begin
     exact C2_5,
 end
 
+-- Property (i) of L being a closed subspace
 lemma LB_inf (L : set E) (hL : is_closedN L) (x ζ : E) (hZ : ζ ∈ L) :
 (⨅ (i : L), ∥x-i∥) ≤ ∥x-ζ∥ :=
 begin
@@ -186,6 +197,7 @@ begin
     exact hZ,
 end
 
+-- Property (ii) of L being a closed subspace
 lemma zero_le_inf (L : set E) (hLN : L ≠ ∅) (hL : is_closedN L) (x : E) :
 0 ≤ (⨅ (i : L), ∥x-i∥) :=
 begin
@@ -204,6 +216,7 @@ begin
   rwa h2 at h2',
 end
 
+-- A well-known inequality for square roots
 lemma sqrt_le_add_sqrt (a b : ℝ) (hb : a ≥ 0) (ha : b ≥ 0) : real.sqrt (a+b) ≤ real.sqrt a + real.sqrt b :=
 begin
   rw real.sqrt_le_iff, simp at ha hb, split,
@@ -220,6 +233,7 @@ begin
      exact mul_nonneg UB_2_d UB_2_b, exact ha, exact hb},
 end
 
+-- This result gives a sufficient condition for a sequence to be cauchy
 lemma bdd_tends_cauchy (c : ℕ → E) (a : ℕ → ℝ) (b : ℕ → ℝ) (ha : tendsto a 0) (hb : tendsto b 0) 
 (h :  ∀ (n m ≥ (1 : ℕ)), ∥c n - c m∥ ^ 2 ≤ (a n) + (b m)) : is_cauchy c :=
 begin
@@ -276,6 +290,7 @@ begin
   exact abs_nonneg (b m), exact abs_nonneg (a n),
 end
 
+-- Showing that 2/n+1 tends to 0 as n \to \infty
 lemma tends_recip : tendsto (λ (n : ℕ), 2 * (1 / (n+1) : ℝ)) 0 :=
 begin
   rw tendsto,
@@ -292,12 +307,14 @@ begin
   exact lt_of_le_of_lt n1' n2,
 end
 
+-- The parallelogram law
 lemma parallelogram (x y : E) : ∥x + y∥ ^ 2 + ∥x - y∥ ^ 2 = (2 : ℝ) * ∥x∥ ^ 2 + (2 : ℝ) * ∥y∥ ^ 2 :=
 begin
   rw [norm_sub_pow_two_real, norm_add_pow_two_real, ← add_assoc, ← add_sub_assoc],
   nlinarith,
 end
 
+-- A modified version of the parallelogram law
 lemma parallelogram_adjusted (x y : E) : ∥x-y∥^2 = (2 : ℝ)*∥x∥^2 + (2 : ℝ)*∥y∥^2 - (4 : ℝ) * ∥ (1/2 : ℝ) • (x+y)∥^2 :=
 begin
   have H := parallelogram x y,
@@ -387,6 +404,11 @@ begin
   specialize hcsucc n, exact le_of_lt hcsucc, 
 end
 
+/-------------------------------------------------------------------------------------------------
+SECTION 3 : THE HILBERT PROJECTION THEOREM              
+
+In this section we prove *THE HILBERT PROJECTION THEOREM* 
+-------------------------------------------------------------------------------------------------/
 
 theorem projection (L : set E) (hLN : L ≠ ∅) (hL : is_closedN L) (hL1 : is_closedN_equiv L) (hLL : is_linear_subspace L) (hLC : is_convex L) {z : ι → L} {d : E} :
 ∀ (x : E), ∃! (y : L), (∥x-y∥ = ⨅ (i : L), ∥x-i∥) :=
