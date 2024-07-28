@@ -4,11 +4,11 @@ The Hilbert Projection Theorem is a famous result in analysis which says that fo
 
 The proof consists of three sections:
 
-#### Section 1: Preliminary definitions:
+### Section 1: Preliminary definitions:
 Here we define basic structures that we will use, such as the definition of a Cauchy sequence, closedness and convexity of subsets of a normed space.
 
-#### Section 2: Preliminary lemmas:
+### Section 2: Preliminary lemmas:
 Here we prove a series of lemmas which we will need in the main proof. For example, we prove that the parallelogram law holds in a normed space, and some general properties of cauchy sequences.
 
-#### Section 3: The main proof:
+### Section 3: The main proof:
 This is where we construct the main proof, utilising the lemmas and definitions from the previous two sections.
